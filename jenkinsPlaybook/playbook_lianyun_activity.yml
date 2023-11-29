@@ -1,0 +1,207 @@
+- hosts: kov2-lianyun-game
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_center_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ centerPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_lobby_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ lobbyPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_match_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ matchPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_world_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ worldPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_super_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ superPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
+
+- hosts: hw1-default-sha2a-Kov2Lianyun_Matchings 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_ly_raid_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Copy Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "cp -a {{ gamePath }}/settings  {{ raidPath }}/"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: Delete Activityi Directory
+    become: yes
+    become_user: root
+    shell:
+      cmd: "rm -rf {{ gamePath }}"
+      chdir: "{{ item }}"
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"

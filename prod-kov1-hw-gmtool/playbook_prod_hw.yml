@@ -1,0 +1,63 @@
+- hosts: "{{ UpdateDst }}"
+  roles:
+  - CreateBackupPath
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Rollback project
+    shell: echo "Rollback project skip"
+  - name: Get start time
+    shell: date +%Y-%m-%d-%H-%M-%S
+    register: StartTime
+  - name: Backup project
+    shell:  cd {{ ProjectPath }}/{{ Environment_prod }} && tar zcf {{ ProjectName }}{{ StartTime.stdout }}.tar.gz * --exclude={{ ExcludePath1 }} --exclude={{ ExcludePath2 }} && mv  {{ ProjectName }}{{ StartTime.stdout }}.tar.gz {{ BackupPath }}
+  - name: stop gmtool process prod
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }}/bin && sh stop.sh
+  - name: download gmtool.zip
+#    unarchive: 
+#      src={{ DownloadUrl }} dest={{ ProjectPath }} copy=no group=ubuntu owner=ubuntu
+    become: yes
+    become_user: ubuntu
+    shell: wget -c "{{ DownloadUrl }}" -O {{ ProjectPath }}/{{ Environment_prod }}/gmtool.zip
+  - name: update process
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }} && unzip gmtool.zip
+  - name: cp gmtool_prod
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }} && /bin/cp -a gmtool/* .
+  - name: clean gmtool dir
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }} && rm -rf gmtool gmtool.zip
+  - name: change config PlayerHistoryData.php
+    become: yes
+    become_user: ubuntu
+    shell: sed -i "s/const DEFAULT_IP = '10.23.219.186'/const DEFAULT_IP = '120.132.21.178'/g" {{ ProjectPath }}/{{ Environment_prod }}/bin/sgzj-gmserver/app/lib/PlayerHistoryData.php  
+  - name: change config PlayerHistoryData.php
+    become: yes
+    become_user: ubuntu
+    shell: sed -i "s/const LY_IP      = '10.23.42.67'/const LY_IP      = '120.132.13.157'/g" {{ ProjectPath }}/{{ Environment_prod }}/bin/sgzj-gmserver/app/lib/PlayerHistoryData.php
+  - name: change config PlayerController.php
+    become: yes
+    become_user: ubuntu
+    shell: sed -i 's/$host = Util::getLocalIP()/$host = "10.3.32.2"/g' {{ ProjectPath }}/{{ Environment_prod }}/bin/sgzj-gmserver/app/controllers/PlayerController.php
+  - name: add x to init
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }}/bin && chmod +x *.init
+  - name: start gmtool process prod
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }}/bin && sh start.sh
+  - name: wait 10s
+    shell: sleep 10s
+  - name: status gmtool process prod
+    become: yes
+    become_user: ubuntu
+    shell: cd {{ ProjectPath }}/{{ Environment_prod }}/bin && sh status.sh
+

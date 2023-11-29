@@ -1,0 +1,85 @@
+- hosts: hw1-default-sha2a-Kov2AndroidCenter 
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_center_*
+    register: res
+  - name: Update center
+    unarchive:
+        src={{ centDownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  
+- hosts: hw1-default-sha2a-Kov2AndroidLobby
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_lobby_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+ 
+- hosts: hw1-default-sha2a-Kov2AndroidMatch
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_match_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+  
+- hosts: hw1-default-sha2a-Kov2AndroidWorld
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_world_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+ 
+- hosts: hw1-default-sha2a-Kov2AndroidSuper
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_super_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+ 
+- hosts: hw1-default-sha2a-Kov2AndroidRaid
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Get game dir
+    shell: ls -d /home/enjoymi/sgzj2_android2_raid_*
+    register: res
+  - name: Update Activity
+    unarchive:
+        src={{ DownloadUrl }} dest={{ item }} copy=no group=enjoymi owner=enjoymi
+    with_items: "{{ res.stdout_lines }}"
+    register: ress
+
+

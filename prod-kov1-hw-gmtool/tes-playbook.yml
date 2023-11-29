@@ -1,0 +1,31 @@
+- hosts: "{{ UpdateDst }}"
+  roles:
+  - CreateBackupPath
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name: Rollback project
+    shell: echo "Rollback project skip"
+  - name: Get start time
+    shell: date +%Y-%m-%d-%H-%M-%S
+    register: StartTime
+  - name: Backup project
+    archive: path={{ ProjectPath }} dest={{ BackupPath }}/{{ ProjectName }}{{ StartTime.stdout }}.tar.gz format=gz
+  - name: Update project
+    unarchive: src={{ DownloadUrl }} dest={{ ProjectPath }} copy=no group=www owner=www
+  - name: Config project
+    template: src=templates/env.j2 dest={{ ProjectPath }}/.env
+  - name: Clean project cache
+    shell: /usr/local/php7_3_21/bin/php  {{ ProjectPath }}/bin/console cache:clear
+#  - name: Restart dependent service
+#    service: name=enjoymi-messenger-consume-async-task-center.service state=restarted enabled=yes
+#    when: inventory_hostname == 'uc1-default-sha1a-instance-platform-webtest-1'
+  - name: Deploy project nginx file for Extranet
+    template: src=templates/task-center-test2.hd.pub.conf.j2 dest=/etc/nginx/conf.d/task-center-test2.hd.pub.conf 
+    notify: Reload nginx service
+  - name: Change project ownership
+    file: path={{ ProjectPath }} state=directory recurse=yes owner=www group=www
+  handlers:
+  - name: Reload nginx service
+    service: name=nginx.service state=reloaded enabled=yes

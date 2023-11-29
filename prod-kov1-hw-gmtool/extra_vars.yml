@@ -1,0 +1,8 @@
+ProjectName: "prod-kov1-hw-gmtool"
+ProjectPath: "/home/ubuntu"
+Environment_prod: "gmtool"
+Environment_test: "gmtool_test"
+Environment_uc_test: "gmtool_outqa"
+BackupPath: "/data/ansible-backup"
+ExcludePath1: ""
+ExcludePath2: ""

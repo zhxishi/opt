@@ -1,0 +1,24 @@
+- hosts: "{{ Instance }}"
+  gather_facts: no
+  vars_files:
+  - extra_vars.yml
+  tasks:
+  - name:
+    become: yes
+    become_user: enjoymi
+    copy:
+        src: /etc/ansible/shell/FixPatch.sh
+        dest: /tmp/
+        owner: enjoymi
+        group: enjoymi
+        mode: 0755
+  - name: Clean Directory
+    become: yes
+    become_user: enjoymi
+    shell:
+      cmd: "/bin/bash /tmp/FixPatch.sh {{ Patch }}"
+#      cmd: "chmod 755 /tmp/FixPatch.sh && su - enjoymi -s /bin/bash /tmp/FixPatch.sh {{ Patch }}"
+#      chdir: "/home/download/"
+    register: ress
+  - name: show ress
+    debug: msg="{{ress}}"
