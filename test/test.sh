@@ -5,3 +5,4 @@ script_path=`dirname $script_abs_name`
 timestamp=`date +%s`
 username=`whoami`
 #这是一个测试
+##还是一个测试
