@@ -16,8 +16,6 @@
 - [X] 2021-10-14 增加 接口API安全
 - [X] 2021-10-03 增加 了一些大会PPT,看到觉得不错的PPT就分享出来，跟着大佬学习
 
-![image](https://github.com/awake1t/HackReport/blob/main/images/WeChat_pay.jpg)
-
 ## 目录
 
 ```python
