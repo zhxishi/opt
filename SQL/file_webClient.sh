@@ -12,8 +12,8 @@ DATE=`date +%Y%m%d_%H%M%S`
 wait_delete_date=`date  -d  "-6 day" +%Y%m%d`
 #测试用
 #wait_delete_date=202302
-mysql_conn="mysql -uroot -pEnjoymiHdtech123 -h10.23.55.150 webClient"
-mysqldump_conn="mysqldump -uroot -pEnjoymiHdtech123 -h10.23.55.150 webClient"
+mysql_conn="mysql -uroot -ppassword -h10.23.55.150 webClient"
+mysqldump_conn="mysqldump -uroot -ppassword -h10.23.55.150 webClient"
 
 table_list=`${mysql_conn} -e "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'webClient' and TABLE_NAME like 'tbl_device_log_${wait_delete_date}';"| grep -v TABLE_NAME`
 
