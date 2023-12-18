@@ -5,7 +5,6 @@ script_path=$(dirname $script_abs_name)
 DATE=$(date +%F_%H-%M-%S)
 USER=root
 PASS=password
-#PASS=EnjoymiHdtech123
 #DB_LIST=$(mysql -h$HOST -u$USER -p$PASS -s -e "show databases;" 2>/dev/null |egrep -v "devops_center|information_schema|mysql|performance_schema|test")
 plat=(android ios ly)
 for pl in ${plat[*]};do
