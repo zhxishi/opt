@@ -1,9 +1,4 @@
 #!/bin/bash
-##################
-#本脚本需要传入两个参数
-#参数1为项目名即：g1或g2
-#参数2为项目名即：android，ios，ly，papa
-###################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
 source /etc/bashrc
 script_name=`basename $0`
@@ -84,6 +79,7 @@ get_delete(){
   ${mysql_conn} $dbname  -e "SELECT
 	CONCAT( '$game_db_name', s.zone ) 已合区服,
 	s.ip 公网IP,
+        s.port,
 	s.NAME 
 FROM
 	${table_name} s 
@@ -145,4 +141,68 @@ FROM
 
 }
 
+sleep 5
+
+##查询合区后主区信息
+get_master(){
+ ${mysql_conn} $dbname  -e "SELECT
+    DISTINCT(CONCAT('$game_db_name', m.zone)) 主区服,	
+    m.PORT 端口,
+    m.ip 服务器IP,
+		m.name
+FROM
+   
+     (    SELECT
+            min(h.zone) zone,
+            h.PORT PORT,
+            h.ip ip,
+						h.name
+        FROM
+            (
+                SELECT
+                    t.zone,
+                    t.ip,
+                    t.PORT,
+                    t.webport,
+										t.name
+                FROM
+                    tbl_zoneinfo_android_sgzj2 t
+                    RIGHT JOIN (
+                        SELECT
+                            PORT,
+                            ip
+                        FROM
+                            tbl_zoneinfo_android_sgzj2
+                        GROUP BY
+                            PORT,
+                            ip
+                    ) s ON t.PORT = s.PORT
+                    AND t.ip = s.ip
+            ) h
+        GROUP BY
+            h.PORT,
+            h.ip
+        ORDER BY
+            1
+    ) m
+    LEFT JOIN (
+        SELECT
+            k.zone czone,
+            k.PORT PORT,
+            k.ip ip,
+						k.name
+        FROM
+            tbl_zoneinfo_android_sgzj2 k
+            LEFT JOIN tbl_zoneinfo_android_sgzj2 b ON k.PORT = b.PORT
+            AND k.ip = b.ip
+    ) n ON m.PORT = n.PORT
+    AND m.ip = n.ip"
+}
+echo "--------合区后的可以清理的区服----------"
+sleep 5
 get_delete
+
+
+echo "------------------查询主区-----------------------"
+sleep 5
+get_master
