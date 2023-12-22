@@ -44,8 +44,6 @@ check() {
 
 }
 
-
-
 if [ "$#" == "1"  ];then
   check ${check_file}
 else
