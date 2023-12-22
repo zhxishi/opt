@@ -24,34 +24,52 @@ fi
 get_mysql_conn() {
 project=$1
 plat=$2
+#mysql_conn="mysql -uroot -pcUz0mt68N -h10.23.210.68"
+#dbname=enjoymi_serverlist
+mysql_conn="mysql -uroot -ppassword -h127.0.0.1"
 dbname=serverlist
 check_var "$@"
 if [ $project == g1  ];then
 
    case ${plat} in
 	android)
-#		mysql_conn="-uroot -pEnjoymiHdtech123 -h10.23.66.74"
-		mysql_conn="mysql -uroot -ppassword -h127.0.0.1"
+		table_name="tbl_zoneinfo_common_android"
+                game_db_name="sgzj_android_"
 	;;
-	appstore)
-		mysql_conn="-uroot -pEnjoymiHdtech123 -h10.23.85.53"
+	ios)
+		table_name="tbl_zoneinfo_appstore_ios"
+                game_db_name="sgzj_appstore_"
+	;;
+	ly)
+		table_name="tbl_zoneinfo_android_ly"
+                game_db_name="sgzj_android_ly_"
+	;;
+	papa)
+		table_name="tbl_zoneinfo_android_papa"
+                game_db_name="gzj_papa_"
 	;;
    esac
 
 elif [ $project == g2  ];then
      case ${plat} in
         android)
-                mysql_conn="-uroot -pEnjoymiHdtech123 -h192.168.1.11"
+              table_name="tbl_zoneinfo_android_sgzj2" 
+              game_db_name="sgzj2_android2_"
         ;;
-        appstore)
-                mysql_conn="-uroot -pEnjoymiHdtech123 -h192.168.1.61"
+        ios)
+              table_name="tbl_zoneinfo_ios_sgzj2"
+              game_db_name="sgzj2_ios2_"
+        ;;
+        ly)
+              table_name="tbl_zoneinfo_android_ly_sgzj2"
+              game_db_name="android_ly_sgzj2"
         ;;
    esac
  fi    
  
 echo "以下是针对$1的$2平台数据库，请检查是否为正确的数据库连接！！"
 echo  ${mysql_conn} 
-sleep 10
+sleep 3
 }
 ##调用函数，显式传参
 get_mysql_conn "$@"
@@ -59,11 +77,11 @@ get_mysql_conn "$@"
 ##查询合区后的可以清理的区服
 get_delete(){
   ${mysql_conn} $dbname  -e "SELECT
-	CONCAT( 'sgzj2_android2_', s.zone ) 已合区服,
+	CONCAT( '$game_db_name', s.zone ) 已合区服,
 	s.ip 公网IP,
 	s.NAME 
 FROM
-	tbl_zoneinfo_android_sgzj2 s 
+	${table_name} s 
 WHERE
 	s.zone NOT IN
 (
@@ -88,13 +106,13 @@ FROM
                     t.PORT,
                     t.webport
                 FROM
-                    tbl_zoneinfo_android_sgzj2 t
+                    ${table_name} t
                     RIGHT JOIN (
                         SELECT
                             PORT,
                             ip
                         FROM
-                            tbl_zoneinfo_android_sgzj2
+                            ${table_name}
                         GROUP BY
                             PORT,
                             ip
@@ -113,8 +131,8 @@ FROM
             b.PORT PORT,
             k.ip ip
         FROM
-            tbl_zoneinfo_android_sgzj2 k
-            LEFT JOIN tbl_zoneinfo_android_sgzj2 b ON k.PORT = b.PORT
+            ${table_name} k
+            LEFT JOIN ${table_name} b ON k.PORT = b.PORT
             AND k.ip = b.ip
     ) n ON m.PORT = n.PORT
     AND m.ip = n.ip) t
