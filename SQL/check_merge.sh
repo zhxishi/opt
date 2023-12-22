@@ -1,4 +1,9 @@
 #!/bin/bash
+##################
+#本脚本需要传入两个参数
+#参数1为项目名即：g1或g2
+#参数2为项目名即：android，ios，ly，papa
+###################
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
 source /etc/bashrc
 script_name=`basename $0`
