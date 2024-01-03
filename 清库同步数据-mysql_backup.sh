@@ -48,6 +48,7 @@ do
    month=$(date -d "${start_month} +${i} month" +%Y%m)
    echo "结束: $e_time"
    echo "月份：$month"
+   echo ========开始备份$month月份数据======================================
 echo "$mysqldump_conn ${dbname} ${table}_old -t --where='time between '$s_time' and '$e_time''| gzip > ${sql_path}/${table}_$month.sql.gz"
 echo "mv ${sql_path}/${table}_$month.sql.gz  ${dir}/${dbname}/${table}/"
 done
